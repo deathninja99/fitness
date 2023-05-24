@@ -1,8 +1,5 @@
 const bcrypt = require("bcrypt");
-const jwt = require("jsonwebtoken");
 const { client } = require("../client");
-const authRouter = require("express").Router;
-const JWT_SECRET = process.env.JWT_SECRET;
 const SALTROUNDS = 10;
 
 async function createuser({ username, password }) {

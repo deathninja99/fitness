@@ -7,6 +7,7 @@ const {
   getuserbyid,
   getuserbyusername,
 } = require("./adapters/users");
+const { createactivity } = require("./adapters/activities");
 async function createtables() {
   console.log("Creating Tables....");
   await client.query(`
@@ -51,13 +52,8 @@ async function rebuilddb() {
   try {
     await droptables();
     await createtables();
-    console.log("creating a user");
-    await createuser({ username: "test", password: "1234" });
-    console.log("finished creating a user");
-    console.log("getuser");
-    await getuser({ username: "test", password: "1234" });
-    console.log("get user by username");
-    await getuserbyusername("test");
+    console.log("createactivity");
+    await createactivity({ name: "running", description: "go fast" });
   } catch (error) {
     console.error(error);
   } finally {
