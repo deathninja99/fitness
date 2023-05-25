@@ -2,11 +2,9 @@ const { client } = require("../client");
 
 async function createactivity({ name, description }) {
   try {
-    //this works, BUT it throws error TypeError: undefined is not iterable (cannot read property Symbol(Symbol.iterator))
-    //idk how to fix
-    const {
-      rows: [activity],
-    } = client.query(
+    //this works
+
+    const { rows } = await client.query(
       `
       INSERT INTO activities(name, description)
       VALUES($1,$2)
@@ -16,25 +14,23 @@ async function createactivity({ name, description }) {
     `,
       [name, description]
     );
-    console.log(activity);
-
-    return activity;
+    return rows;
   } catch (error) {
-    console.log(error);
     throw error;
   }
 }
 async function updateactivity(id, name, description) {
   try {
-    //untested
+    //tested works
     const {
       rows: [activity],
-    } = client.query(
+    } = await client.query(
       `
-    INSERT INTO ACTIVITIES(name, description)
-    VALUES($2,$3)
-    WHERE id = $1
-    returning*;
+      update activities
+      set name = 'jump',
+      description = 'go high'
+      where id =1
+      
   `,
       [id, name, description]
     );
@@ -46,14 +42,14 @@ async function updateactivity(id, name, description) {
 
 async function getactivitybyid(id) {
   try {
-    //untested
+    //tested works
     const {
       rows: [activity],
-    } = client.query(
+    } = await client.query(
       `
       SELECT * from activities
       where id = $1
-      returning *
+
     `,
       [id]
     );
@@ -65,10 +61,9 @@ async function getactivitybyid(id) {
 
 async function getallactivitites() {
   try {
-    //untested
-    const { rows } = client.query(`
+    //tested works
+    const { rows } = await client.query(`
     SELECT * FROM activities
-    returning *
   `);
     return rows;
   } catch (error) {
@@ -78,4 +73,7 @@ async function getallactivitites() {
 
 module.exports = {
   createactivity,
+  updateactivity,
+  getactivitybyid,
+  getallactivitites,
 };

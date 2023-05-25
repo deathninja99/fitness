@@ -53,7 +53,10 @@ async function rebuilddb() {
     await droptables();
     await createtables();
     console.log("createactivity");
+    await createuser({ username: "bob", password: "1234" });
     await createactivity({ name: "running", description: "go fast" });
+    await createactivity({ name: "pushups", description: "doing push ups" });
+    await createactivity({ name: "pullups", description: "pull ups" });
   } catch (error) {
     console.error(error);
   } finally {
