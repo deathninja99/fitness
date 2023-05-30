@@ -8,6 +8,17 @@ const {
   getuserbyusername,
 } = require("./adapters/users");
 const { createactivity } = require("./adapters/activities");
+const {
+  createroutine,
+  routineswithoutactviities,
+  getpublicroutinesbyactivity,
+} = require("./adapters/routines");
+const {
+  addactivitytoroutine,
+  updateroutineactivity,
+  destroyroutineactivity,
+  getroutineactiviesbyroutine,
+} = require("./adapters/routines_activities");
 async function createtables() {
   console.log("Creating Tables....");
   await client.query(`
@@ -53,10 +64,27 @@ async function rebuilddb() {
     await droptables();
     await createtables();
     console.log("createactivity");
+    await createuser({ username: "frank", password: "4312" });
     await createuser({ username: "bob", password: "1234" });
+    await createuser({ username: "canada", password: "mapleleaf" });
     await createactivity({ name: "running", description: "go fast" });
     await createactivity({ name: "pushups", description: "doing push ups" });
     await createactivity({ name: "pullups", description: "pull ups" });
+    console.log("create routine");
+    await createroutine(1, true, "fit fit", "git fit");
+    await createroutine(2, true, "tat", "tot");
+    console.log("finished crating routine");
+    await addactivitytoroutine(1, 1, 110, 100);
+    await addactivitytoroutine(1, 2, 5, 10);
+    await addactivitytoroutine(2, 1, 50, 100);
+    // console.log("getting routines without activities");
+    // await routineswithoutactviities();
+    console.log("getting routines by activity");
+    await getpublicroutinesbyactivity("running");
+    console.log("update routines");
+    await updateroutineactivity(1, 1, 10);
+    await destroyroutineactivity(2);
+    await getroutineactiviesbyroutine(1);
   } catch (error) {
     console.error(error);
   } finally {

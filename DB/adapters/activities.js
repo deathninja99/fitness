@@ -27,9 +27,9 @@ async function updateactivity(id, name, description) {
     } = await client.query(
       `
       update activities
-      set name = 'jump',
-      description = 'go high'
-      where id =1
+      set name = $2,
+      description = $3
+      where id =$1
       
   `,
       [id, name, description]
