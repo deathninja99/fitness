@@ -48,7 +48,7 @@ async function destroyroutineactivity(id) {
   return;
 }
 async function getroutineactiviesbyroutine(id) {
-  //untested
+  //works
   const { rows } = await client.query(
     `
     select * from routines_activities

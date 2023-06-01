@@ -77,13 +77,14 @@ async function rebuilddb() {
     await addactivitytoroutine(1, 1, 110, 100);
     await addactivitytoroutine(1, 2, 5, 10);
     await addactivitytoroutine(2, 1, 50, 100);
-    // console.log("getting routines without activities");
-    // await routineswithoutactviities();
-    console.log("getting routines by activity");
-    await getpublicroutinesbyactivity("running");
-    console.log("update routines");
-    await updateroutineactivity(1, 1, 10);
-    await destroyroutineactivity(2);
+    console.log("getting routines without activities");
+    await routineswithoutactviities();
+    // console.log("getting routines by activity");
+    // await getpublicroutinesbyactivity("running");
+    // console.log("update routines");
+    // await updateroutineactivity(1, 1, 10);
+    // await destroyroutineactivity(2);
+    console.log("get routine activities by routine");
     await getroutineactiviesbyroutine(1);
   } catch (error) {
     console.error(error);

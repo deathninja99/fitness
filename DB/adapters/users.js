@@ -1,12 +1,13 @@
 const bcrypt = require("bcrypt");
 const { client } = require("../client");
 const SALTROUNDS = 10;
+const cookie_parser = require("cookie-parser");
+const { cookie_secret } = process.env;
 
 async function createuser({ username, password }) {
   try {
     const hashedPassword = await bcrypt.hash(password, SALTROUNDS);
-    delete password;
-    password = hashedPassword;
+
     const {
       rows: [user],
     } = await client.query(
@@ -16,7 +17,7 @@ async function createuser({ username, password }) {
     ON CONFLICT (username) DO NOTHING
     RETURNING *;
     `,
-      [username, password]
+      [username, hashedPassword]
     );
     return user;
   } catch (error) {
@@ -30,7 +31,7 @@ async function getuser({ username, password }) {
       rows: [user],
     } = await client.query(
       `
-      SELECT username, password FROM users
+      SELECT username, password, id FROM users
       where $1 = username
     `,
       [username]
@@ -38,10 +39,10 @@ async function getuser({ username, password }) {
     const match = await bcrypt.compare(password, user.password);
     if (match) {
       console.log("valid credentials");
-      return "valid credentials";
+      return true, user.id;
     } else {
       console.log("invalid credentials");
-      return "invalid credentials";
+      return false;
     }
   } catch (error) {
     throw error;
@@ -79,7 +80,7 @@ async function getuserbyusername(username) {
     `,
       [username]
     );
-    console.log(user);
+
     return user;
   } catch (error) {
     throw error;

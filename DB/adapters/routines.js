@@ -243,7 +243,7 @@ async function updateroutine(id, creator_id, is_public, name, goal) {
   } catch (error) {}
 }
 async function destroyroutine(id) {
-  //untested
+  //untested should work
   const { rows } = await client.query(
     `
     delete from routines where id = $1
