@@ -37,9 +37,10 @@ async function getuser({ username, password }) {
       [username]
     );
     const match = await bcrypt.compare(password, user.password);
+    console.log(match);
     if (match) {
       console.log("valid credentials");
-      return true, user.id;
+      return true;
     } else {
       console.log("invalid credentials");
       return false;

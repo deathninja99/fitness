@@ -8,6 +8,7 @@ async function getroutinebyid(id) {
    
       SELECT 
 	routines.id as id,
+  routines.creator_id as creator,
 	routines.name as name,
 	routines.goal as goal, 
     CASE WHEN routines_activities.routine_id IS NULL THEN '[]'::json
@@ -26,9 +27,8 @@ async function getroutinebyid(id) {
     ON routines.id = routines_activities.routine_id
     JOIN activities 
     ON routines_activities.activity_id = activities.id
-    WHERE routines.id = '1'
+    WHERE routines.id = $1
     GROUP BY routines.id, routines_activities.routine_id
-    
         `,
       [id]
     );
@@ -83,6 +83,7 @@ async function getallroutines() {
 
   `);
 }
+
 async function getallpublicroutines() {
   //works
   const { rows } = await client.query(`
@@ -109,7 +110,9 @@ async function getallpublicroutines() {
     where routines.is_public = true
     GROUP BY routines.id, routines_activities.routine_id
   `);
+  return rows;
 }
+
 async function getallroutinesbyuser(username) {
   try {
     //works
@@ -142,8 +145,12 @@ async function getallroutinesbyuser(username) {
     `,
       [username]
     );
-  } catch (error) {}
+    return rows;
+  } catch (error) {
+    throw error;
+  }
 }
+
 async function getpublicroutinesbyuser(username) {
   try {
     //works
@@ -176,8 +183,12 @@ async function getpublicroutinesbyuser(username) {
     `,
       [username]
     );
-  } catch (error) {}
+    return rows;
+  } catch (error) {
+    throw error;
+  }
 }
+
 async function getpublicroutinesbyactivity(activity) {
   try {
     //works
@@ -212,7 +223,8 @@ async function getpublicroutinesbyactivity(activity) {
     return rows;
   } catch (error) {}
 }
-async function createroutine(id, is_public, name, goal) {
+
+async function createroutine({ id, is_public, name, goal }) {
   try {
     //works
     const { rows } = await client.query(
@@ -223,8 +235,11 @@ async function createroutine(id, is_public, name, goal) {
       [id, is_public, name, goal]
     );
     return rows;
-  } catch (error) {}
+  } catch (error) {
+    throw error;
+  }
 }
+
 async function updateroutine(id, creator_id, is_public, name, goal) {
   try {
     //works

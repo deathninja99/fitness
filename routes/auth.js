@@ -1,6 +1,7 @@
-const authRouter = require("express").Router();
-
 const jwt = require("jsonwebtoken");
+const authRouter = require("express").Router();
+const authRequired = require("./utils");
+
 const {
   createuser,
   getuser,
@@ -11,9 +12,6 @@ authRouter.use((req, res, next) => {
   console.log("-----A REQUEST HAS BEEN MADE TO /AUTH-----");
   next();
 });
-authRouter.get("/test", async (req, res, next) => {
-  res.send("Auth router test!");
-});
 
 authRouter.post("/register", async (req, res, next) => {
   try {
@@ -22,7 +20,6 @@ authRouter.post("/register", async (req, res, next) => {
     const taken = await getuserbyusername(username);
     console.log("Taken: ", taken);
     if (taken) {
-      console.log("About to send error");
       next({
         message: "username already taken",
         name: "auth error",
@@ -49,8 +46,8 @@ authRouter.post("/login", async (req, res, next) => {
     const { username, password } = req.body;
     const match = await getuser({ username, password });
     if (match) {
-      const token = jwt.sign(username, process.env.JWT_TOKEN);
-      res.cookie("token", token, "id", match.id, {
+      const token = jwt.sign({ username }, process.env.JWT_TOKEN);
+      res.cookie("token", token, {
         sameSite: "strict",
         httpOnly: true,
         signed: true,
@@ -62,7 +59,7 @@ authRouter.post("/login", async (req, res, next) => {
   }
 });
 
-authRouter.get("./logout", async (req, res, next) => {
+authRouter.get("/logout", async (req, res, next) => {
   res.clearCookie("token", {
     sameSite: "strict",
     httpOnly: true,
@@ -75,3 +72,4 @@ authRouter.get("./logout", async (req, res, next) => {
 });
 
 module.exports = authRouter;
+//

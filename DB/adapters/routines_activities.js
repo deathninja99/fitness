@@ -47,6 +47,17 @@ async function destroyroutineactivity(id) {
   );
   return;
 }
+async function destroyroutines_activity(id) {
+  await client.query(
+    //tested
+    `
+    delete from routines_activities
+    where routine_id = $1
+  `,
+    [id]
+  );
+  return;
+}
 async function getroutineactiviesbyroutine(id) {
   //works
   const { rows } = await client.query(
@@ -66,4 +77,5 @@ module.exports = {
   destroyroutineactivity,
   updateroutineactivity,
   addactivitytoroutine,
+  destroyroutines_activity,
 };
