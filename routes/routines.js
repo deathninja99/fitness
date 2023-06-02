@@ -13,57 +13,61 @@ const creatorRequired = require("./utils");
 const jwt = require("jsonwebtoken");
 const routinesRouter = require("express").Router();
 
-routinesRouter.get("/routines", async (req, res, next) => {
-  res.send(await getallpublicroutines());
-});
-routinesRouter.post("/routines", authRequired, async (req, res, next) => {
-  const post = req.body;
-  req.body.id = req.user.id;
-  console.log("post", post);
-  res.send(console.log(await createroutine(post)));
-});
-routinesRouter.patch(
-  "/routines/:routineid",
-  authRequired,
-  async (req, res, next) => {
-    try {
-      Number(req.params.routineid);
-      console.log("number?", Number(req.params.routineid));
-      const results = await getroutinebyid(req.params.routineid);
-      console.log("user", req.user.id, "result.creator", results[0].creator);
-      if ((req.user.id = results[0].creator)) {
-        console.log("params", req.params.routineid);
-        const post = req.body;
-        req.body.creator_id = req.user.id;
-        req.body.id = Number(req.params.routineid);
-        console.log("fullrequest", post);
-        await updateroutine(post);
-        res.send("post updated!");
-      } else {
-        res.sendStatus(401);
-        res.send("you are not authorized");
-      }
-    } catch {
-      throw console.error(error);
-    }
-    return;
+routinesRouter.get("/", async (req, res, next) => {
+  try {
+    const allRoutines = await getallpublicroutines();
+    res.send(allRoutines);
+  } catch (error) {
+    next(error);
   }
-);
-routinesRouter.delete(
-  "/routines/:routineid",
-  authRequired,
-  async (req, res, next) => {
-    const results = await getroutinebyid(req.params.routineid);
-    if ((req.user.id = results[0].creator)) {
+});
+routinesRouter.post("/", authRequired, async (req, res, next) => {
+  try {
+    const post = req.body;
+    post.creator_id = req.user.id;
+    const createdRoutine = await createroutine(post);
+    res.send(createdRoutine);
+  } catch (error) {
+    next(error);
+  }
+});
+
+routinesRouter.patch("/:routineid", authRequired, async (req, res, next) => {
+  const { routineid } = req.params;
+  const { is_public, name, goal } = req.body;
+  try {
+    const routine = await getroutinebyid(+req.params.routineid);
+    console.log("user", req.user.id, "result.creator", routine.creator);
+    if (req.user.id === routine.creator) {
+      const updatedRoutine = await updateroutine(+routineid, req.body);
+      res.send(updatedRoutine);
+    } else {
+      res.status(401);
+      next({
+        message: "You didn't create this routine",
+      });
+    }
+  } catch (error) {
+    next(error);
+  }
+});
+
+routinesRouter.delete("/:routineid", authRequired, async (req, res, next) => {
+  try {
+    const routine = await getroutinebyid(+req.params.routineid);
+    if ((req.user.id = routine.creator)) {
       await destroyroutines_activity(req.params.routineid);
       await destroyroutine(req.params.routineid);
       res.send("routine deleted!");
     } else {
-      res.sendStatus(401);
-      res.send("you are not authorized");
+      next({
+        message: "You cant delete that routine!!!",
+      });
     }
-    return;
+  } catch (error) {
+    next(error);
   }
-);
+});
+
 module.exports = routinesRouter;
 //

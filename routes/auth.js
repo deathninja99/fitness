@@ -28,6 +28,7 @@ authRouter.post("/register", async (req, res, next) => {
     }
 
     const user = await createuser({ username, password });
+    delete user.password;
     const token = jwt.sign(user, process.env.JWT_TOKEN);
     res.cookie("token", token, {
       sameSite: "strict",
@@ -46,6 +47,7 @@ authRouter.post("/login", async (req, res, next) => {
     const { username, password } = req.body;
     const match = await getuser({ username, password });
     if (match) {
+      delete user.password;
       const token = jwt.sign({ username }, process.env.JWT_TOKEN);
       res.cookie("token", token, {
         sameSite: "strict",

@@ -3,36 +3,38 @@ const { client } = require("../client");
 async function getroutinebyid(id) {
   try {
     // i would have never gotten this if i didnt watch the office hours that i got kidna skipped over
-    const { rows } = await client.query(
+    const {
+      rows: [routine],
+    } = await client.query(
       `
    
       SELECT 
-	routines.id as id,
-  routines.creator_id as creator,
-	routines.name as name,
-	routines.goal as goal, 
-    CASE WHEN routines_activities.routine_id IS NULL THEN '[]'::json
-    ELSE 
-    JSON_AGG(
-    	JSON_BUILD_OBJECT(
-    	'id', activities.id,
-    	'name', activities.name,
-    	'description', activities.description,
-    	'duration', routines_activities.duration,
-    	'count', routines_activities.count
-    	)
-    ) END AS activities
-    FROM routines
-    JOIN routines_activities 
-    ON routines.id = routines_activities.routine_id
-    JOIN activities 
-    ON routines_activities.activity_id = activities.id
-    WHERE routines.id = $1
-    GROUP BY routines.id, routines_activities.routine_id
+      routines.id as id,
+      routines.creator_id as creator,
+      routines.name as name,
+      routines.goal as goal, 
+        CASE WHEN routines_activities.routine_id IS NULL THEN '[]'::json
+        ELSE 
+        JSON_AGG(
+          JSON_BUILD_OBJECT(
+          'id', activities.id,
+          'name', activities.name,
+          'description', activities.description,
+          'duration', routines_activities.duration,
+          'count', routines_activities.count
+          )
+        ) END AS activities
+        FROM routines
+        LEFT JOIN routines_activities 
+        ON routines.id = routines_activities.routine_id
+        LEFT JOIN activities 
+        ON routines_activities.activity_id = activities.id
+        WHERE routines.id = $1
+        GROUP BY routines.id, routines_activities.routine_id
         `,
       [id]
     );
-    return rows;
+    return routine;
   } catch (error) {
     console.log(error);
     throw error;
@@ -224,38 +226,50 @@ async function getpublicroutinesbyactivity(activity) {
   } catch (error) {}
 }
 
-async function createroutine({ id, is_public, name, goal }) {
+async function createroutine({ creator_id, is_public, name, goal }) {
   try {
     //works
-    const { rows } = await client.query(
+    const {
+      rows: [createdRoutine],
+    } = await client.query(
       `
       insert into routines(creator_id, is_public, name, goal)
       values($1,$2,$3,$4)
+      returning *
     `,
-      [id, is_public, name, goal]
+      [creator_id, is_public, name, goal]
     );
-    return rows;
+    return createdRoutine;
   } catch (error) {
     throw error;
   }
 }
 
-async function updateroutine(id, creator_id, is_public, name, goal) {
+async function updateroutine(id, updateObj) {
   try {
     //works
-    const { rows } = await client.query(
+
+    const setString = Object.keys(updateObj)
+      .map((key, i) => {
+        return `${key}=$${i + 1}`;
+      })
+      .join(", ");
+
+    const {
+      rows: [updatedRoutine],
+    } = await client.query(
       `
       update routines
-        set 
-          creator_id = $2,
-          is_public = $3,
-          name = $4, 
-          goal = $5
-        where id = $1
+        set ${setString}
+        where id = ${id}
+        returning *
     `,
-      [id, creator_id, is_public, name, goal]
+      Object.values(updateObj)
     );
-  } catch (error) {}
+    return updatedRoutine;
+  } catch (error) {
+    throw error;
+  }
 }
 async function destroyroutine(id) {
   //untested should work
