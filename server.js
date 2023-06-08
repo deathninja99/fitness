@@ -22,6 +22,10 @@ server.use((req, res, next) => {
 
 server.use("/api", require("./routes"));
 
+server.use((req, res, next) => {
+  res.sendFile(path.join(__dirname, "./client/dist", "index.html"));
+});
+
 server.use((error, req, res, next) => {
   res.send({
     name: error.name,

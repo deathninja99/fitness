@@ -15,8 +15,7 @@ authRouter.use((req, res, next) => {
 
 authRouter.post("/register", async (req, res, next) => {
   try {
-    const { username, password } = req.body;
-
+    const { username, password } = req.body.user;
     const taken = await getuserbyusername(username);
     console.log("Taken: ", taken);
     if (taken) {
@@ -26,8 +25,9 @@ authRouter.post("/register", async (req, res, next) => {
       });
       return;
     }
-
+    console.log("before creatuser");
     const user = await createuser({ username, password });
+    console.log("after createuser");
     delete user.password;
     const token = jwt.sign(user, process.env.JWT_TOKEN);
     res.cookie("token", token, {
@@ -54,7 +54,7 @@ authRouter.post("/login", async (req, res, next) => {
         httpOnly: true,
         signed: true,
       });
-      res.send();
+      res.send(user);
     }
   } catch (error) {
     next(error);
@@ -71,6 +71,9 @@ authRouter.get("/logout", async (req, res, next) => {
     loggeding: false,
     message: "logged out!",
   });
+});
+authRouter.get("/me", authRequired, (req, res, next) => {
+  res.send({ success: true, message: "you are athorized", user: req.uesr });
 });
 
 module.exports = authRouter;

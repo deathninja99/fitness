@@ -7,7 +7,7 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "seed:dev": "nodemon ./DB/seed.js",
     "seed": "node ./DB/seed.js",
-    "start:dev": "nodemon server.js"
+    "start:dev": "(npm run dev --prefix client) & nodemon server.js"
   },
   "keywords": [],
   "author": "",

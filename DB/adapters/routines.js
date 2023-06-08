@@ -36,7 +36,6 @@ async function getroutinebyid(id) {
     );
     return routine;
   } catch (error) {
-    console.log(error);
     throw error;
   }
 }
@@ -250,11 +249,11 @@ async function updateroutine(id, updateObj) {
     //works
 
     const setString = Object.keys(updateObj)
+
       .map((key, i) => {
         return `${key}=$${i + 1}`;
       })
       .join(", ");
-
     const {
       rows: [updatedRoutine],
     } = await client.query(
@@ -266,6 +265,9 @@ async function updateroutine(id, updateObj) {
     `,
       Object.values(updateObj)
     );
+    console.log("update keys", Object.keys(updateObj));
+    console.log("obj values", Object.values(updateObj));
+    console.log("set string", setString);
     return updatedRoutine;
   } catch (error) {
     throw error;

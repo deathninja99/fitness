@@ -1,33 +1,39 @@
+const {
+  addactivitytoroutine,
+  updateroutineactivity,
+  destroyroutineactivity,
+} = require("../DB/adapters/routines_activities");
 const authRequired = require("./utils");
 
 const routine_activitiesRouter = require("express").Router();
 
-routine_activitiesRouter.post(
-  "/routines_activities",
-  async (req, res, next) => {
-    res.send(console.log(req.user));
-  }
-);
+routine_activitiesRouter.post("/", async (req, res, next) => {
+  const post = req.body;
+  const cookiedough = await addactivitytoroutine(post);
+  res.send(cookiedough);
+});
+
 routine_activitiesRouter.patch(
-  "/routines_activities/:rt-at-id",
+  "/:daparams",
   authRequired,
   async (req, res, next) => {
     try {
-      const results = await getroutinebyid(req.params.rt - at - id);
-      if ((req.user.id = results[0].creator)) {
-        console.log(true);
-        console.log(req.params);
-        console.log(req.user);
-      }
-    } catch {
-      console.log(console.error(error));
+      const post = req.body;
+      console.log(post);
+      const maplesyrup = await updateroutineactivity(req.params.daparams, post);
+      res.send(maplesyrup);
+    } catch (error) {
+      next(error);
     }
   }
 );
 routine_activitiesRouter.delete(
-  "/routines_activities/:rt-at-id",
+  "/:daparams/delete",
   authRequired,
-  async (req, res, next) => {}
+  async (req, res, next) => {
+    const waagh = await destroyroutineactivity(req.params.daparams);
+    res.send(waagh);
+  }
 );
 
 module.exports = routine_activitiesRouter;

@@ -9,32 +9,56 @@ async function getroutineactivitybyid(id) {
   );
   return rows;
 }
-async function addactivitytoroutine(routine_id, activity_id, count, duration) {
+async function addactivitytoroutine(updateObj) {
   try {
-    //works
-    const { rows } = await client.query(
-      `insert into routines_activities(routine_id,activity_id,count,duration)
+    const setString = Object.keys(updateObj)
+      //const name = object keys of input
+      .map((key, i) => {
+        //map over the object where keys are i/index
+        return `${key}=$${i + 1}`;
+        //returning the key starting at one
+      })
+      .join(", ");
+    console.log("keys?", Object.keys(updateObj));
+    console.log("setstring, ", setString);
+
+    // seperating them with a comma
+    const {
+      rows: [routines_activity],
+    } = await client.query(
+      `insert into routines_activities(${Object.keys(updateObj)})
     values($1,$2,$3,$4)`,
-      [routine_id, activity_id, count, duration]
+      Object.values(updateObj)
     );
-    return;
+    console.log(setString);
+    return routines_activity;
   } catch (error) {
     throw error;
   }
 }
-async function updateroutineactivity(id, count, duration) {
-  await client.query(
-    //works
+async function updateroutineactivity(id, updateObj) {
+  const setString = Object.keys(updateObj)
+    //const name = object keys of input
+    .map((key, i) => {
+      //map over the object where keys are i/index
+      return `${key}=$${i + 1}`;
+      //returning the key starting at one
+    })
+    .join(", ");
+  console.log("setstring, ", setString);
+  // seperating them with a comma
+  const {
+    rows: [updatedRoutine],
+  } = await client.query(
     `
-    update routines_activities
-    set
-    count = $2,
-    duration = $3
-    where id = $1
-  `,
-    [id, count, duration]
+      update routines_activities
+        set ${setString}
+        where id = ${id}
+        returning *
+    `,
+    Object.values(updateObj)
   );
-  return;
+  return updatedRoutine;
 }
 async function destroyroutineactivity(id) {
   await client.query(
@@ -42,17 +66,6 @@ async function destroyroutineactivity(id) {
     `
     delete from routines_activities
     where id = $1
-  `,
-    [id]
-  );
-  return;
-}
-async function destroyroutines_activity(id) {
-  await client.query(
-    //tested
-    `
-    delete from routines_activities
-    where routine_id = $1
   `,
     [id]
   );
@@ -77,5 +90,4 @@ module.exports = {
   destroyroutineactivity,
   updateroutineactivity,
   addactivitytoroutine,
-  destroyroutines_activity,
 };
