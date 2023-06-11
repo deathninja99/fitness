@@ -156,4 +156,17 @@ export async function deleteroutine(routine_id) {
   }
 }
 
+export async function deleteactivity(routine_id) {
+  try {
+    const response = await fetch(
+      `api/routine_activities/${routine_id}/delete`,
+      {
+        method: "delete",
+        body: JSON.stringify(routine_id),
+      }
+    );
+  } catch (error) {
+    throw error;
+  }
+}
 export async function updateroutine(routine_id, is_public, name, goal) {}

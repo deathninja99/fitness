@@ -12,10 +12,10 @@ import useAuth from "./hooks/useAuth";
 import { CreateActivity } from "./routes/createactivity";
 import { AddActivity } from "./routes/addactivity";
 import { UpdateRoutine } from "./routes/udpateroutine";
+import { DeleteActivity } from "./routes/deleteactivity";
 
 function App() {
-  const { user, setUser } = useAuth();
-
+  const { user, setUser, loggedin } = useAuth();
   async function logouthandler() {
     logout();
     setUser({ id: null, username: "Guest" });
@@ -29,7 +29,7 @@ function App() {
         <Link to="/register">register</Link>
         <Link to="/login">login</Link>
         <Link to="/routines">Routines</Link>
-        <Link to="/myroutines">My Routines</Link>
+        {loggedin ? <Link to="/myroutines">My Routines</Link> : <></>}
         <Link to="/activities">Activities</Link>
         <button onClick={logouthandler}>logout</button>
       </nav>
@@ -42,6 +42,10 @@ function App() {
           <Route path="/myroutines" element={<MyRoutines></MyRoutines>}></Route>
           <Route path="/activities" element={<Activities />} />
           <Route path="/createroutine" element={<CreateRoutine />}></Route>
+          <Route
+            path="/deleteactivity"
+            element={<DeleteActivity></DeleteActivity>}
+          ></Route>
           <Route
             path="/createactivity"
             element={<CreateActivity></CreateActivity>}

@@ -26,6 +26,7 @@ export function myroutines() {
       <Link to="/createroutine">create a routine?</Link>
       <br />
       <Link to="/updateroutine">update a routine?</Link>
+      <Link to="/deleteactivity">delete a activity from routine?</Link>
       <div className="container">
         {routines.map((routine, idx) => {
           return (
