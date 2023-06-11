@@ -92,7 +92,8 @@ export async function fetchmyroutines(user) {
 }
 
 export async function postaroutine(is_public, name, goal) {
-  console.log(user);
+  const [user] = useAuth;
+  console.log("posting a  routine what is user?", user);
   const response = await fetch("/api/routines", {
     method: "POST",
     headers: {

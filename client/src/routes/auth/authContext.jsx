@@ -5,11 +5,11 @@ export const AuthContext = createContext();
 const AuthProvider = ({ children }) => {
   const [loggedin, setloggedin] = useState(false);
   console.log("loggedin?", loggedin);
-  const [user, setuser] = useState("Guest");
+  const [user, setUser] = useState({ id: null, username: "Guest" });
   console.log("user?", user);
   const contextvalue = {
     user,
-    setuser,
+    setUser,
     loggedin,
     setloggedin,
   };
@@ -17,12 +17,13 @@ const AuthProvider = ({ children }) => {
     async function getme() {
       try {
         const response = await fetchme();
+        console.log("are we hitting this use effect in authprovider");
         console.log("---------------response from get me function", response);
-        setuser(user);
+        setUser(user);
         setloggedin(true);
       } catch (error) {
         console.log("error?", error);
-        setuser({ username: "Guest" });
+        setUser({ username: "Guest" });
         setloggedin(false);
       }
     }

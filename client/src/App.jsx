@@ -21,7 +21,7 @@ function App() {
   return (
     <div className="App">
       <nav>
-        {<h4>welcome, {user}</h4>}
+        {<h4>welcome, {user.username}</h4>}
         <Link to="/">home</Link>
         <Link to="/register">register</Link>
         <Link to="/login">login</Link>

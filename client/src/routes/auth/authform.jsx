@@ -12,7 +12,7 @@ export function AuthForm() {
     const [error, seterror] = useState([]);
     const [username, setusername] = useState("");
     const [password, setpassword] = useState("");
-    const { setloggedin, setuser } = useAuth();
+    const { setloggedin, setUser } = useAuth();
 
     async function handleSubmit(e) {
       e.preventDefault();
@@ -31,8 +31,11 @@ export function AuthForm() {
         console.log("after awaiting response---------");
         console.log("result-----------", response);
         if (response.success) {
-          console.log("before we set user", response.data.username);
-          setuser(response.data.username);
+          const user = response.data;
+          console.log("before we set user", username);
+          setloggedin(true);
+          setUser(user);
+          seterror("");
         }
       } catch (error) {
         console.log(error);

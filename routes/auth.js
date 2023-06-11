@@ -49,9 +49,10 @@ authRouter.post("/login", async (req, res, next) => {
     console.log("body in login function", req.body);
     const match = await getuser({ username, password });
     if (match) {
-      console.log(match);
+      console.log("what is match", match);
+      id = match.user.id;
       delete match.user.password;
-      const token = jwt.sign({ username }, process.env.JWT_TOKEN);
+      const token = jwt.sign({ id, username }, process.env.JWT_TOKEN);
       res.cookie("token", token, {
         sameSite: "strict",
         httpOnly: true,
