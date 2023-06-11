@@ -87,7 +87,7 @@ export async function fetchactivities() {
   return activities;
 }
 export async function fetchmyroutines(user) {
-  const response = await fetch(`/api/routines/:${user}`);
+  const response = await fetch(`/api/routines/:${user}/routines`);
   const myroutines = await response.json();
   const routines = myroutines.routines;
   console.log("these are my routines", routines);
@@ -138,3 +138,22 @@ export async function addactivitytoroutine(
   console.log("resultes from react api", result);
   return;
 }
+
+export async function deleteroutine(routine_id) {
+  try {
+    console.log("id in api", routine_id);
+    const response = await fetch(`api/routines/${routine_id}`, {
+      method: "delete",
+      body: JSON.stringify(routine_id),
+    });
+    const result = response.json;
+    console.log("response in delete routine=======", response);
+    console.log("resultes from react api", result.json);
+    return;
+  } catch (error) {
+    console.log(error);
+    throw error;
+  }
+}
+
+export async function updateroutine(routine_id, is_public, name, goal) {}

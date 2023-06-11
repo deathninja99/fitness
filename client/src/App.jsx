@@ -11,6 +11,7 @@ import { CreateRoutine } from "./routes/createroutine";
 import useAuth from "./hooks/useAuth";
 import { CreateActivity } from "./routes/createactivity";
 import { AddActivity } from "./routes/addactivity";
+import { UpdateRoutine } from "./routes/udpateroutine";
 
 function App() {
   const { user, setUser } = useAuth();
@@ -48,6 +49,10 @@ function App() {
           <Route
             path="/addactivity"
             element={<AddActivity></AddActivity>}
+          ></Route>
+          <Route
+            path="/updateroutine"
+            element={<UpdateRoutine></UpdateRoutine>}
           ></Route>
         </Routes>
       </div>

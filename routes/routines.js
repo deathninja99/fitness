@@ -1,5 +1,5 @@
 const {
-  destroyroutines_activity,
+  destroyroutineactivity,
 } = require("../DB/adapters/routines_activities");
 const {
   getallpublicroutines,
@@ -25,16 +25,20 @@ routinesRouter.get("/", async (req, res, next) => {
 });
 routinesRouter.post("/", authRequired, async (req, res, next) => {
   try {
+    // im sorry pawan i know i shouldnt but this was gettign annoying + losign time
     const post = req.body;
+    post.creator_id = req.user.id;
+    console.log("in the router post", post);
     const createdRoutine = await createroutine(post);
     res.send(createdRoutine);
   } catch (error) {
     next(error);
   }
 });
-routinesRouter.get(`/:user`, authRequired, async (req, res, next) => {
+routinesRouter.get(`/:user/routines`, authRequired, async (req, res, next) => {
   try {
     const userId = req.user.id;
+
     const myroutines = await getallroutinesbyuserid(userId);
     console.log("myroutines", myroutines);
     res.send({ success: true, routines: myroutines });
@@ -64,9 +68,10 @@ routinesRouter.delete("/:routineid", authRequired, async (req, res, next) => {
   try {
     const routine = await getroutinebyid(+req.params.routineid);
     console.log(routine);
-    if ((req.user.id = routine.creator)) {
-      await destroyroutines_activity(req.params.routineid);
-      await destroyroutine(req.params.routineid);
+    console.log(req.user.id == routine.creator);
+    if (req.user.id == routine.creator) {
+      await destroyroutineactivity(+req.params.routineid);
+      await destroyroutine(+req.params.routineid);
       res.send("routine deleted!");
     } else {
       next({

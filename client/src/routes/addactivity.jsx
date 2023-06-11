@@ -6,6 +6,7 @@ import { fetchmyroutines } from "../api/api";
 export function AddActivity() {
   const [activities, setactivities] = useState([]);
   const [error, seterror] = useState(null);
+
   useEffect(() => {
     async function getactivities() {
       const gettthem = await fetchactivities();
@@ -13,6 +14,7 @@ export function AddActivity() {
     }
     getactivities();
   }, []);
+
   const [routines, setroutines] = useState([]);
   useEffect(() => {
     async function getroutines() {
@@ -21,6 +23,7 @@ export function AddActivity() {
     }
     getroutines();
   }, []);
+
   try {
     const [error, seterror] = useState("");
     const [count, setcount] = useState("");

@@ -65,7 +65,7 @@ async function destroyroutineactivity(id) {
     //tested
     `
     delete from routines_activities
-    where id = $1
+    where routine_id = $1
   `,
     [id]
   );
