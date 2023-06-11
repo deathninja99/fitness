@@ -9,7 +9,6 @@ const routine_activitiesRouter = require("express").Router();
 
 routine_activitiesRouter.post("/", async (req, res, next) => {
   const post = req.body;
-  console.log("int the express backend", post);
   const cookiedough = await addactivitytoroutine(post);
   res.send(cookiedough);
 });

@@ -23,15 +23,9 @@ export function CreateActivity() {
         <h1>create a activity</h1>
         <p>{error}</p>
         <form onSubmit={handleSubmit}>
-          <input
-            type="text"
-            name="name"
-            placeholder="activity name"
-            value={name}
-            onChange={(e) => {
-              setname(e.target.value);
-            }}
-          />
+          <select>
+            
+          </select>
           <br />
           <input
             type="text"

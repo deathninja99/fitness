@@ -11,8 +11,6 @@ export function UpdateRoutine() {
     const [name, setname] = useState("");
     const [goal, setgoal] = useState("");
     const [ispublic, setispublic] = useState(true);
-    const [form, setform] = useState([]);
-
     const [routines, setroutines] = useState([]);
     useEffect(() => {
       async function getroutines() {

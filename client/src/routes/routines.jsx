@@ -1,6 +1,5 @@
 import { useEffect, useState } from "react";
 import { fetchroutines } from "../api/api";
-import Activities from "./activities";
 import "../App.css";
 import { Link } from "react-router-dom";
 
