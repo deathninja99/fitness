@@ -2,12 +2,12 @@ const bcrypt = require("bcrypt");
 const { client } = require("../client");
 const SALTROUNDS = 10;
 const cookie_parser = require("cookie-parser");
+const { use } = require("bcrypt/promises");
 const { cookie_secret } = process.env;
 
 async function createuser({ username, password }) {
   try {
     const hashedPassword = await bcrypt.hash(password, SALTROUNDS);
-
     const {
       rows: [user],
     } = await client.query(
@@ -40,7 +40,7 @@ async function getuser({ username, password }) {
     console.log(match);
     if (match) {
       console.log("valid credentials");
-      return true;
+      return { success: true, user };
     } else {
       console.log("invalid credentials");
       return false;

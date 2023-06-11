@@ -25,9 +25,9 @@ async function getroutinebyid(id) {
           )
         ) END AS activities
         FROM routines
-        LEFT JOIN routines_activities 
+        full outer JOIN routines_activities 
         ON routines.id = routines_activities.routine_id
-        LEFT JOIN activities 
+        full outer JOIN activities 
         ON routines_activities.activity_id = activities.id
         WHERE routines.id = $1
         GROUP BY routines.id, routines_activities.routine_id
@@ -76,9 +76,9 @@ async function getallroutines() {
     	)
     ) END AS activities
     FROM routines
-    JOIN routines_activities 
+    left JOIN routines_activities 
     ON routines.id = routines_activities.routine_id
-    JOIN activities 
+    left JOIN activities 
     ON routines_activities.activity_id = activities.id
     GROUP BY routines.id, routines_activities.routine_id
 
@@ -104,9 +104,9 @@ async function getallpublicroutines() {
     	)
     ) END AS activities
     FROM routines
-    JOIN routines_activities 
+    left JOIN routines_activities 
     ON routines.id = routines_activities.routine_id
-    JOIN activities 
+    left JOIN activities 
     ON routines_activities.activity_id = activities.id
     where routines.is_public = true
     GROUP BY routines.id, routines_activities.routine_id

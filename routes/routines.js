@@ -55,6 +55,7 @@ routinesRouter.patch("/:routineid", authRequired, async (req, res, next) => {
 routinesRouter.delete("/:routineid", authRequired, async (req, res, next) => {
   try {
     const routine = await getroutinebyid(+req.params.routineid);
+    console.log(routine);
     if ((req.user.id = routine.creator)) {
       await destroyroutines_activity(req.params.routineid);
       await destroyroutine(req.params.routineid);

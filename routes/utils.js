@@ -8,7 +8,7 @@ const authRequired = (req, res, next) => {
   } catch (error) {
     console.log(error);
     res.sendStatus(401).send({
-      loggedin: false,
+      success: false,
       message: "you are not logged in.",
     });
     return;

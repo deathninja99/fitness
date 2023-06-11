@@ -1,8 +1,8 @@
 const activitiesRouter = require("express").Router();
 const {
-  getallactivities,
   createactivity,
   updateactivity,
+  getallactivitites,
 } = require("../DB/adapters/activities");
 const { getpublicroutinesbyactivity } = require("../DB/adapters/routines");
 const {
@@ -11,7 +11,7 @@ const {
 const authRequired = require("./utils");
 
 activitiesRouter.get("/", async (req, res, next) => {
-  const allactivities = await getallactivities();
+  const allactivities = await getallactivitites();
   res.send(allactivities);
 });
 activitiesRouter.post("/", authRequired, async (req, res, next) => {

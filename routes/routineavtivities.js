@@ -27,6 +27,7 @@ routine_activitiesRouter.patch(
     }
   }
 );
+//daparams = routine_activities id
 routine_activitiesRouter.delete(
   "/:daparams/delete",
   authRequired,

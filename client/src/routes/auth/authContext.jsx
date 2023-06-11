@@ -3,19 +3,8 @@ import { fetchme } from "../../api/api";
 export const AuthContext = createContext();
 
 const AuthProvider = ({ children }) => {
-  const [user, setuser] = useState({ username: "Guest" });
   const [loggedin, setloggedin] = useState(false);
-  useEffect(() => {
-    async function getme() {
-      try {
-        const { message, success, user } = await fetchme();
-        setuser(user);
-      } catch (error) {
-        setuser({ username: "Guest" });
-      }
-    }
-    getme();
-  }, [loggedin]);
+  const [user, setuser] = useState({ id: null, username: "Guest" });
 
   const contextvalue = {
     user,
@@ -23,6 +12,21 @@ const AuthProvider = ({ children }) => {
     loggedin,
     setloggedin,
   };
+  useEffect(() => {
+    async function getme() {
+      try {
+        const response = await fetchme();
+        console.log("results", response);
+        setuser(user);
+        setloggedin(true);
+      } catch (error) {
+        console.log("error?", error);
+        setuser({ username: "Guest" });
+        setloggedin(false);
+      }
+    }
+    getme();
+  }, [loggedin]);
 
   return (
     <AuthContext.Provider value={contextvalue}>{children}</AuthContext.Provider>

@@ -1,44 +1,70 @@
 import React, { useState } from "react";
-import { registeruser, login } from "../../api/api";
+import { registerUser, login } from "../../api/api";
 import { useLocation } from "react-router-dom";
+import "../../index.css";
+import "../../App.css";
+import useAuth from "../../hooks/useAuth";
 
 export function AuthForm() {
-  const { error, seterror } = useState();
   try {
     let location = useLocation();
     // login form
+    const [error, seterror] = useState([]);
+    const [username, setusername] = useState("");
+    const [password, setpassword] = useState("");
+    const { setloggedin, setuser } = useAuth();
+
+    async function handleSubmit(e) {
+      e.preventDefault();
+      if (!username.length || !password.length) {
+        seterror("You must add a valid username and password");
+        return;
+      }
+      try {
+        let result;
+        if (location.pathname === "/register") {
+          result = registerUser(username, password);
+        } else {
+          result = login(username, password);
+        }
+        let response = await result;
+        console.log("result", response.data.username);
+        if (response.success) {
+          setloggedin(true);
+          setuser(response.data.username);
+        }
+      } catch (error) {
+        console.log(error);
+        seterror(error.message);
+      }
+      setusername("");
+      setpassword("");
+    }
     return (
       <>
-        <p>{error}</p>
         <form
           className="form"
           onSubmit={(event) => {
-            event.preventDefault();
-            const form = event.target;
-            const formData = new FormData(form);
-            const values = Object.fromEntries(formData.entries());
-            let result;
-            if (location.pathname == "/login") {
-              result = login(values.username, values.username);
-            } else {
-              result = registeruser(values.username, values.username);
-            }
-            if (result.success) {
-            }
+            handleSubmit(event);
           }}
         >
           <h1>{location.pathname.substring(1)}</h1>
+          {error && <p>{error}</p>}
           <input
             className="inputspace"
             name="username"
             type="text"
             placeholder="username"
+            value={username}
+            onChange={(e) => setusername(e.target.value)}
           />
           <input
             className="inputspace"
             name="password"
             type="text"
             placeholder="password"
+            value={password}
+            onChange={(e) => setpassword(e.target.value)}
           />
 
           <button type="submit">{location.pathname.substring(1)}</button>
@@ -46,6 +72,6 @@ export function AuthForm() {
       </>
     );
   } catch (error) {
-    seterror(error);
+    throw error;
   }
 }
