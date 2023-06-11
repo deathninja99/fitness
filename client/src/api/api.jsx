@@ -119,3 +119,22 @@ export async function postaactivity(name, description) {
   console.log("resultes from react api", result);
   return;
 }
+
+export async function addactivitytoroutine(
+  count,
+  duration,
+  routine_id,
+  activity_id
+) {
+  const response = await fetch("api/routine_activities", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({ count, routine_id, duration, activity_id }),
+  });
+  const result = response.json;
+  console.log(response);
+  console.log("resultes from react api", result);
+  return;
+}
