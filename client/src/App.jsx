@@ -9,18 +9,19 @@ import { logout } from "./api/api";
 import { myroutines as MyRoutines } from "./routes/myroutines";
 import { CreateRoutine } from "./routes/createroutine";
 import useAuth from "./hooks/useAuth";
+import { CreateActivity } from "./routes/createactivity";
 
 function App() {
-  const { user, setLoggedin, loggedin } = useAuth();
+  const { user, loggedin } = useAuth();
 
   async function logouthandler() {
-    await logout;
-    setLoggedin(loggedin);
+    logout;
   }
+
   return (
     <div className="App">
       <nav>
-        {<h4>welcome, {user.username}</h4>}
+        {<h4>welcome, {user}</h4>}
         <Link to="/">home</Link>
         <Link to="/register">register</Link>
         <Link to="/login">login</Link>
@@ -38,6 +39,10 @@ function App() {
           <Route path="/myroutines" element={<MyRoutines></MyRoutines>}></Route>
           <Route path="/activities" element={<Activities />} />
           <Route path="/createroutine" element={<CreateRoutine />}></Route>
+          <Route
+            path="/createactivity"
+            element={<CreateActivity></CreateActivity>}
+          ></Route>
         </Routes>
       </div>
       <footer>sass 2023</footer>

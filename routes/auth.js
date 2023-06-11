@@ -59,8 +59,6 @@ authRouter.post("/login", async (req, res, next) => {
       });
       const data = match.user;
       const success = true;
-      console.log("in login .post?");
-      console.log("in /login", user, success);
       res.send({ data, success });
     } else {
       res.status(401);
@@ -84,7 +82,6 @@ authRouter.get("/logout", async (req, res, next) => {
 });
 authRouter.get("/me", authRequired, (req, res, next) => {
   try {
-    console.log("/me", req.user);
     res.send({ success: true, message: "you are athorized", user: req.user });
   } catch (error) {
     next(error);

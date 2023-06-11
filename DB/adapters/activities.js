@@ -4,7 +4,7 @@ async function createactivity({ name, description }) {
   try {
     //this works
 
-    const { rows } = await client.query(
+    const { rows: activity } = await client.query(
       `
       INSERT INTO activities(name, description)
       VALUES($1,$2)
@@ -14,9 +14,9 @@ async function createactivity({ name, description }) {
     `,
       [name, description]
     );
-    return rows;
+    return { success: true, message: "created activity", activity };
   } catch (error) {
-    throw error;
+    return { success: false, message: "activity already made" };
   }
 }
 async function updateactivity(id, name, description) {

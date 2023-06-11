@@ -4,8 +4,9 @@ export const AuthContext = createContext();
 
 const AuthProvider = ({ children }) => {
   const [loggedin, setloggedin] = useState(false);
-  const [user, setuser] = useState({ id: null, username: "Guest" });
-
+  console.log("loggedin?", loggedin);
+  const [user, setuser] = useState("Guest");
+  console.log("user?", user);
   const contextvalue = {
     user,
     setuser,
@@ -16,7 +17,7 @@ const AuthProvider = ({ children }) => {
     async function getme() {
       try {
         const response = await fetchme();
-        console.log("results", response);
+        console.log("---------------response from get me function", response);
         setuser(user);
         setloggedin(true);
       } catch (error) {

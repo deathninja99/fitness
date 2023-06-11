@@ -28,9 +28,10 @@ export function AuthForm() {
           result = login(username, password);
         }
         let response = await result;
-        console.log("result", response.data.username);
+        console.log("after awaiting response---------");
+        console.log("result-----------", response);
         if (response.success) {
-          setloggedin(true);
+          console.log("before we set user", response.data.username);
           setuser(response.data.username);
         }
       } catch (error) {

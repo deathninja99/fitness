@@ -1,3 +1,5 @@
+import useAuth from "../hooks/useAuth";
+
 export async function registerUser(username, password) {
   const response = await fetch("/api/auth/register", {
     method: "POST",
@@ -33,6 +35,7 @@ export async function login(username, password) {
     });
     const { success, message, data } = await response.json();
     console.log("response in api login", response);
+    console.log("response in api user", data);
     if (!success) {
       throw {
         message,
@@ -87,6 +90,7 @@ export async function fetchmyroutines(user) {
   const myroutines = await response.json();
   return myroutines;
 }
+
 export async function postaroutine(is_public, name, goal) {
   console.log(user);
   const response = await fetch("/api/routines", {
@@ -98,5 +102,19 @@ export async function postaroutine(is_public, name, goal) {
     body: JSON.stringify({ is_public, name, goal }),
   });
   const result = await response.json();
+  console.log("results", result.json);
   return result;
+}
+
+export async function postaactivity(name, description) {
+  const response = await fetch("/api/activities", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({ name, description }),
+  });
+  const result = response.json;
+  console.log("resultes from react api", result);
+  return;
 }

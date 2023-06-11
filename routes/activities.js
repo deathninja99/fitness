@@ -17,6 +17,7 @@ activitiesRouter.get("/", async (req, res, next) => {
 activitiesRouter.post("/", authRequired, async (req, res, next) => {
   const post = req.body;
   const createactivityresults = await createactivity(post);
+  console.log("express level", createactivityresults);
   res.send(createactivityresults);
 });
 activitiesRouter.patch("/:activityid", authRequired, async (req, res, next) => {

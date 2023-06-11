@@ -6,7 +6,6 @@ import { Link } from "react-router-dom";
 
 export default function Routines() {
   const [routines, setroutines] = useState([]);
-  const [activities, setactivities] = useState([]);
   const [error, seterror] = useState(null);
   useEffect(() => {
     async function getroutines() {
