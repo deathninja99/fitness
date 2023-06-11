@@ -89,7 +89,9 @@ export async function fetchactivities() {
 export async function fetchmyroutines(user) {
   const response = await fetch(`/api/routines/:${user}`);
   const myroutines = await response.json();
-  return myroutines;
+  const routines = myroutines.routines;
+  console.log("these are my routines", routines);
+  return routines;
 }
 
 export async function postaroutine(is_public, name, goal) {

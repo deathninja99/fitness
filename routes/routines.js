@@ -8,6 +8,7 @@ const {
   updateroutine,
   getroutinebyid,
   getallroutinesbyuser,
+  getallroutinesbyuserid,
 } = require("../DB/adapters/routines");
 const authRequired = require("./utils");
 const creatorRequired = require("./utils");
@@ -33,10 +34,10 @@ routinesRouter.post("/", authRequired, async (req, res, next) => {
 });
 routinesRouter.get(`/:user`, authRequired, async (req, res, next) => {
   try {
-    const user = req.user;
-    const myroutines = await getallroutinesbyuser(user);
-    console.log(myroutines);
-    res.send("routines?", myroutines);
+    const userId = req.user.id;
+    const myroutines = await getallroutinesbyuserid(userId);
+    console.log("myroutines", myroutines);
+    res.send({ success: true, routines: myroutines });
   } catch (error) {}
 });
 routinesRouter.patch("/:routineid", authRequired, async (req, res, next) => {

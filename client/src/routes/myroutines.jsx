@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { fetchmyroutines } from "../api/api";
+import "../App.css";
 
 export function myroutines() {
   const [routines, setroutines] = useState([]);
@@ -12,17 +13,16 @@ export function myroutines() {
     }
     getroutines();
   }, []);
-  console.log(routines);
   return (
     <div>
       <h1>my routines</h1>
       <Link to="/createroutine">create a routine?</Link>
-      {/* <div className="container">
+      <div className="container">
         {routines.map((routine, idx) => {
           return (
             <>
-              <div>
-                <div key={idx}>
+              <div className="container">
+                <div key={idx} className="card">
                   <p>{routine.name}</p>
                   <p>{routine.goal}</p>
                 </div>
@@ -30,7 +30,7 @@ export function myroutines() {
             </>
           );
         })}
-      </div> */}
+      </div>
     </div>
   );
 }

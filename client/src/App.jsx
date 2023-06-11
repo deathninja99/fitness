@@ -10,6 +10,7 @@ import { myroutines as MyRoutines } from "./routes/myroutines";
 import { CreateRoutine } from "./routes/createroutine";
 import useAuth from "./hooks/useAuth";
 import { CreateActivity } from "./routes/createactivity";
+import { AddActivity } from "./routes/addactivity";
 
 function App() {
   const { user, setUser } = useAuth();
@@ -43,6 +44,10 @@ function App() {
           <Route
             path="/createactivity"
             element={<CreateActivity></CreateActivity>}
+          ></Route>
+          <Route
+            path="/addactivity"
+            element={<AddActivity></AddActivity>}
           ></Route>
         </Routes>
       </div>

@@ -141,7 +141,6 @@ async function getallroutinesbyuser(username) {
       ON routines_activities.activity_id = activities.id
       join users
       on users.id = routines.creator_id
-      where users.username = $1
       GROUP BY routines.id, routines_activities.routine_id
     `,
       [username]
@@ -187,6 +186,22 @@ async function getpublicroutinesbyuser(username) {
     return rows;
   } catch (error) {
     throw error;
+  }
+}
+async function getallroutinesbyuserid(userId) {
+  try {
+    const { rows } = await client.query(
+      `
+        SELECT *
+        FROM routines
+        WHERE creator_id = $1;
+        `,
+      [userId]
+    );
+
+    return rows;
+  } catch (error) {
+    console.log(error);
   }
 }
 
@@ -294,4 +309,5 @@ module.exports = {
   createroutine,
   updateroutine,
   destroyroutine,
+  getallroutinesbyuserid,
 };
