@@ -8,6 +8,7 @@ export function CreateRoutine() {
     const [name, setname] = useState("");
     const [goal, setgoal] = useState("");
     const [ispublic, setispublic] = useState(true);
+    const { user } = useAuth();
     async function handleSubmit(e) {
       e.preventDefault();
       const results = await postaroutine(ispublic, name, goal);
