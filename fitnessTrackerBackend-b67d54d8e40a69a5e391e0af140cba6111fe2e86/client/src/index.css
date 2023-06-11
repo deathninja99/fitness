@@ -1,0 +1,152 @@
+#root {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  /* height: 100vh; */
+  margin: 0;
+  padding: 0;
+  font-family: "Roboto", sans-serif;
+  /* width: 100%; */
+}
+
+.navbar {
+  display: flex;
+  justify-content: space-between;
+
+  align-items: center;
+  background-color: #333;
+  color: #fff;
+  padding: 10px;
+}
+
+.navbar__username {
+  font-size: 18px;
+  margin-right: 10px;
+}
+
+.navbar__links {
+  display: flex;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.navbar__links li {
+  margin: 0 10px;
+}
+
+.navbar__links li a {
+  text-decoration: none;
+  color: #fff;
+}
+
+.navbar__links li a:hover {
+  color: #f00;
+}
+
+.navbar__logout {
+  background-color: #f00;
+  color: #fff;
+  border: none;
+  padding: 8px 16px;
+  font-size: 16px;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.routines-container {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.routine-card {
+  width: 300px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  padding: 10px;
+  margin: 10px;
+  background-color: #f2f2f2;
+}
+
+.routine-card__name {
+  font-size: 20px;
+  margin-bottom: 5px;
+}
+
+.routine-card__goal,
+.routine-card__description,
+.routine-card__user {
+  font-size: 14px;
+  margin-bottom: 5px;
+}
+
+.activities-container {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.activity-card {
+  width: 300px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  padding: 10px;
+  margin: 10px;
+  background-color: #f2f2f2;
+}
+
+.activity-card__name {
+  font-size: 20px;
+  margin-bottom: 5px;
+}
+
+.activity-card__description {
+  font-size: 14px;
+  margin-bottom: 5px;
+}
+.auth-form-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+}
+
+.auth-form {
+  width: 300px;
+  padding: 20px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  background-color: #f2f2f2;
+}
+
+.auth-form h2 {
+  text-align: center;
+}
+
+.auth-form input {
+  width: 100%;
+  margin-bottom: 10px;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+
+.auth-form button {
+  width: 100%;
+  padding: 10px;
+  background-color: #f00;
+  color: #fff;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.auth-form p {
+  text-align: center;
+}
+
+.error-message {
+  color: red;
+  text-align: center;
+}
