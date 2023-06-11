@@ -77,6 +77,7 @@ authRouter.get("/logout", async (req, res, next) => {
     signed: true,
   });
   res.send({
+    success: true,
     loggeding: false,
     message: "logged out!",
   });

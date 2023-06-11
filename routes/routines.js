@@ -7,6 +7,7 @@ const {
   destroyroutine,
   updateroutine,
   getroutinebyid,
+  getallroutinesbyuser,
 } = require("../DB/adapters/routines");
 const authRequired = require("./utils");
 const creatorRequired = require("./utils");
@@ -24,14 +25,20 @@ routinesRouter.get("/", async (req, res, next) => {
 routinesRouter.post("/", authRequired, async (req, res, next) => {
   try {
     const post = req.body;
-    post.creator_id = req.user.id;
     const createdRoutine = await createroutine(post);
     res.send(createdRoutine);
   } catch (error) {
     next(error);
   }
 });
-
+routinesRouter.get(`/:user`, authRequired, async (req, res, next) => {
+  try {
+    const user = req.user;
+    const myroutines = await getallroutinesbyuser(user);
+    console.log(myroutines);
+    res.send("routines?", myroutines);
+  } catch (error) {}
+});
 routinesRouter.patch("/:routineid", authRequired, async (req, res, next) => {
   const { routineid } = req.params;
   const { is_public, name, goal } = req.body;

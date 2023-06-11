@@ -18,16 +18,20 @@ export default function Activities() {
       <div>
         <h1>activities</h1>
         <Link to="/createactivity">create activity?</Link>
-        {activities.map((activity, idx) => {
-          return (
-            <div key={idx} className="card">
-              <p>{activity.id}</p>
-              <p>{activity.name}</p>
-              <p>{activity.description}</p>
-              <div />
-            </div>
-          );
-        })}
+        <br />
+        <Link to="/addactivity">add a activity to a routine?</Link>
+        <div className="container">
+          {activities.map((activity, idx) => {
+            return (
+              <div key={idx} className="card">
+                <p>{activity.id}</p>
+                <p>{activity.name}</p>
+                <p>{activity.description}</p>
+                <div />
+              </div>
+            );
+          })}
+        </div>
       </div>
     );
   } catch (error) {

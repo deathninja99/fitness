@@ -12,10 +12,11 @@ import useAuth from "./hooks/useAuth";
 import { CreateActivity } from "./routes/createactivity";
 
 function App() {
-  const { user, loggedin } = useAuth();
+  const { user, setUser } = useAuth();
 
   async function logouthandler() {
-    logout;
+    logout();
+    setUser({ id: null, username: "Guest" });
   }
 
   return (

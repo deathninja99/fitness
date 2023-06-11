@@ -28,11 +28,8 @@ export function AuthForm() {
           result = login(username, password);
         }
         let response = await result;
-        console.log("after awaiting response---------");
-        console.log("result-----------", response);
         if (response.success) {
           const user = response.data;
-          console.log("before we set user", username);
           setloggedin(true);
           setUser(user);
           seterror("");

@@ -1,5 +1,11 @@
 import useAuth from "../hooks/useAuth";
 
+export async function logout() {
+  const response = await fetch("/api/auth/logout");
+  console.log("are we hitting her");
+  const loggedout = await response.json();
+  return loggedout;
+}
 export async function registerUser(username, password) {
   const response = await fetch("/api/auth/register", {
     method: "POST",
@@ -79,11 +85,6 @@ export async function fetchactivities() {
   const response = await fetch("/api/activities");
   const activities = await response.json();
   return activities;
-}
-export async function logout() {
-  const response = await fetch("/api/auth/logout");
-  const loggedout = await response.json();
-  return loggedout;
 }
 export async function fetchmyroutines(user) {
   const response = await fetch(`/api/routines/:${user}`);
